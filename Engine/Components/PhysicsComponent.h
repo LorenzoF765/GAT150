@@ -2,22 +2,28 @@
 #include "Framework/Component.h"
 #include "Math/Vector2.h"
 
-namespace Solas {
-	class PhysicsComponent : public Component {
+namespace Engine
+{
+	class Actor;
+
+	class PhysicsComponent : public Component
+	{
 	public:
+
 		PhysicsComponent() = default;
-		~PhysicsComponent() = default;
+		CLASS_DECLARATION(PhysicsComponent)
 
-		void Update() override;
+			void Update() override;
+		virtual void ApplyForce(const Vector2& force) { acceleration_ += force; }
 
-		void ApplyForce(const Vector2& force) {
-			m_acceleration += force;
-		}
+		virtual void Initialize() override {}
 
-		//Variables
-		Vector2 m_velocity;
-		Vector2 m_acceleration;
+		bool Write(const rapidjson::Value& value) const override;
+		bool Read(const rapidjson::Value& value) override;
 
-		float m_damping = 1;
+		Vector2 velocity_;
+		Vector2 acceleration_;
+
+		float damping = 1;
 	};
 }

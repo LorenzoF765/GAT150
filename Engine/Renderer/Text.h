@@ -3,24 +3,25 @@
 
 struct SDL_Texture;
 
-namespace Solas {
+namespace Engine
+{
 	class Font;
 	class Renderer;
-	struct Color;
 	struct Vector2;
+	struct Color;
 
-	class Text {
+	class Text
+	{
 	public:
 		Text() = default;
-		Text(Font* font) : m_font{ font } {}
+		Text(Font* font) : font_{ font } {}
 		~Text();
 
-		void Create(Renderer& renderer, const std::string& text, const Color& color);
-		void Draw(Renderer& renderer, const Vector2& pos);
+		void Create(Renderer& renderer, const std::string text, const Color& color);
+		void Draw(Renderer& renderer, const Vector2& position);
 
 	private:
-		Font* m_font = nullptr;
-		SDL_Texture* m_texture = nullptr;
-
+		Font* font_ = nullptr;
+		SDL_Texture* texture_ = nullptr;
 	};
 }

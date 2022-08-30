@@ -2,10 +2,12 @@
 #include <cstdarg>
 #include <iostream>
 
-namespace Solas {
+namespace Engine
+{
 	Logger logger_g;
 
-	void Logger::Log(const char* format, ...) {
+	void Logger::Log(const char* format, ...)
+	{
 		va_list args;
 		va_start(args, format);
 

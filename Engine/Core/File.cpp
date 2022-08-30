@@ -1,44 +1,51 @@
 #include "File.h"
+#include "Logger.h"
 #include <filesystem>
 #include <fstream>
 
-namespace Solas
-{
-	void setFilePath(const std::string& pathname)
+namespace Engine {
+	void SetFilePath(const std::string& pathname)
 	{
 		std::filesystem::current_path(pathname);
 	}
 
-	std::string getFilePath()
+	std::string GetFilePath()
 	{
 		return std::filesystem::current_path().string();
 	}
 
-	bool fileExists(const std::string& pathname)
+	bool FileExists(const std::string& pathname)
 	{
 		return std::filesystem::exists(pathname);
 	}
 
-	bool getFileSize(const std::string& pathname, size_t& size)
+	bool GetFileSize(const std::string& pathname, size_t& size)
 	{
-		if (!fileExists(pathname)) return false;
+		if (!FileExists(pathname))
+		{
+			return false;
+		}
 		size = std::filesystem::file_size(pathname);
 
 		return true;
 	}
 
-	bool readFile(const std::string& pathname, std::string& buffer)
+	bool ReadFile(const std::string& pathname, std::string& buffer)
 	{
-		if (!fileExists(pathname)) return false;
+		if (!FileExists(pathname))
+		{
+			LOG("Error: Could not read file %s", pathname.c_str());
+			return false;
+		}
 
 		size_t size;
-		getFileSize(pathname, size);
+		GetFileSize(pathname, size);
 		buffer.resize(size);
 
 		std::ifstream fstream(pathname);
 		fstream.read(buffer.data(), size);
 		fstream.close();
 
-		return true; // WAS FALSE BEFORE
+		return true;
 	}
 }

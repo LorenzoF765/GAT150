@@ -1,6 +1,6 @@
-#include "mathutils.h"
-
-int Math::sqr(int v)
+#include "MathUtils.h"
+// DEPENDENCIES
+namespace Math
 {
-	return v * v;
+
 }

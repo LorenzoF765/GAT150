@@ -1,5 +1,7 @@
 #pragma once
-namespace Solas {
+
+namespace Engine
+{
 	template<class T>
 	class Singleton
 	{

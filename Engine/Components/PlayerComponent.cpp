@@ -2,48 +2,77 @@
 #include "Engine.h"
 #include <iostream>
 
-namespace Solas {
-	void PlayerComponent::Update() {
-		Vector2 direction = Vector2::zero;
-		if (Solas::inputSystem_g.GetKeyState(key_A) == Solas::InputSystem::Held) {
-			//m_owner->transform_.position += {-10, 0};
-			//direction = Vector2::left;
-			m_owner->transform_.rotation -= 100 * time_g.deltaTime;
+namespace Engine
+{
+	void PlayerComponent::Initialize()
+	{
+		auto component = owner_->GetComponent<CollisionComponent>();
+		if (component)
+		{
+			component->SetCollisionEnter(std::bind(&PlayerComponent::OnCollisionEnter, this, std::placeholders::_1));
+			component->SetCollisionExit(std::bind(&PlayerComponent::OnCollisionExit, this, std::placeholders::_1));
+		}
+	}
+	void PlayerComponent::Update()
+	{
+		// Movement
+		Vector2 direction = Vector2::Zero;
+		if (inputSystem_g.GetKeyState(key_left) == InputSystem::Held)
+		{
+			direction = Vector2::Left;
+		}
+		if (inputSystem_g.GetKeyState(key_right) == InputSystem::Held)
+		{
+			direction = Vector2::Right;
 		}
 
-		if (Solas::inputSystem_g.GetKeyState(key_D) == Solas::InputSystem::Held) {
-			//m_owner->transform_.position += {10, 0};
-			//direction = Vector2::right;
-			m_owner->transform_.rotation += 100 * time_g.deltaTime;
+		auto component = owner_->GetComponent<PhysicsComponent>();
+		if (component)
+		{
+			component->ApplyForce(direction * speed);
 		}
-
-		float thrust = 0;
-		if (Solas::inputSystem_g.GetKeyState(key_W) == Solas::InputSystem::Held) {
-			//m_owner->transform_.position += {0, -10};
-			thrust = 100;
-		}
-
-
-		if (Solas::inputSystem_g.GetKeyState(key_S) == Solas::InputSystem::Held) {
-			//m_owner->transform_.position += {0, 10};
-		}
-
-		auto component = m_owner->GetComponent<PhysicsComponent>();
-		if (component) {
-			Vector2 force = Vector2::Rotate({ 1, 0 }, Math::DegToRad(m_owner->transform_.rotation)) * thrust;
-			component->ApplyForce(force);
-
-			/*force = (Vector2{ 400, 300 } - m_owner->transform_.position).Normalized() * 60.0f;
-			component->ApplyForce(force);*/
-		}
-
-		m_owner->transform_.position += direction * 300 * time_g.deltaTime;
-
-		if (inputSystem_g.GetKeyState(key_space) == InputSystem::Pressed) {
-			auto component = m_owner->GetComponent<AudioComponent>();
-			if (component) {
-				component->Play();
+		// Shoot
+		if (inputSystem_g.GetKeyState(key_space) == InputSystem::Pressed)
+		{
+			auto component = owner_->GetComponent<PhysicsComponent>();
+			if (component)
+			{
+				component->ApplyForce(Vector2::Up * 500);
 			}
 		}
+
+		// Grav Swap
+		if (inputSystem_g.GetKeyState(key_shift) == InputSystem::Pressed)
+		{
+			auto component = owner_->GetComponent<RBPhysicsComponent>();
+			if (component)
+			{
+				component->GravitySwitch();
+			}
+		}
+	}
+
+	bool PlayerComponent::Write(const rapidjson::Value& value) const
+	{
+		return true;
+	}
+
+	bool PlayerComponent::Read(const rapidjson::Value& value)
+	{
+		READ_DATA(value, speed);
+
+		return true;
+	}
+	void PlayerComponent::OnCollisionEnter(Actor* other)
+	{
+		if (other->GetName() == "Coin")
+		{
+			other->SetDestroy(true);
+		}
+		std::cout << "Player Enter" << std::endl;
+	}
+	void PlayerComponent::OnCollisionExit(Actor* other)
+	{
+		std::cout << "Player Exit" << std::endl;
 	}
 }

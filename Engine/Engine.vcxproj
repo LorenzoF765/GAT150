@@ -88,7 +88,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)ThirdParty\SDL2-2.0.22\include;$(SolutionDir)ThirdParty\fmod\core\inc;$(ProjectDir)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)ThirdParty\SDL2-2.0.22\include;$(SolutionDir)ThirdParty\fmod\core\inc;$(ProjectDir);$(SolutionDir)ThirdParty\rapidjson\include</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
@@ -109,7 +109,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)ThirdParty\SDL2-2.0.22\include;$(SolutionDir)ThirdParty\fmod\core\inc;$(ProjectDir)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)ThirdParty\SDL2-2.0.22\include;$(SolutionDir)ThirdParty\fmod\core\inc;$(ProjectDir);$(SolutionDir)ThirdParty\rapidjson\include</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
@@ -132,7 +132,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)ThirdParty\SDL2-2.0.22\include;$(SolutionDir)ThirdParty\fmod\core\inc;$(ProjectDir)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)ThirdParty\SDL2-2.0.22\include;$(SolutionDir)ThirdParty\fmod\core\inc;$(ProjectDir);$(SolutionDir)ThirdParty\rapidjson\include</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
@@ -155,7 +155,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)ThirdParty\SDL2-2.0.22\include;$(SolutionDir)ThirdParty\fmod\core\inc;$(ProjectDir)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)ThirdParty\SDL2-2.0.22\include;$(SolutionDir)ThirdParty\fmod\core\inc;$(ProjectDir);$(SolutionDir)ThirdParty\rapidjson\include</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
@@ -173,7 +173,13 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Audio\AudioSystem.cpp" />
+    <ClCompile Include="..\..\..\..\OneDrive\Desktop\School Files\GAT150\Engine\Audio\AudioChannel.cpp" />
+    <ClCompile Include="..\..\..\..\OneDrive\Desktop\School Files\GAT150\Engine\Audio\AudioSystem.cpp" />
+    <ClCompile Include="..\..\..\..\OneDrive\Desktop\School Files\GAT150\Engine\Components\CollisionComponent.cpp" />
+    <ClCompile Include="..\..\..\..\OneDrive\Desktop\School Files\GAT150\Engine\Components\RBPhysicsComponent.cpp" />
+    <ClCompile Include="..\..\..\..\OneDrive\Desktop\School Files\GAT150\Engine\Components\SpriteAnimateComponent.cpp" />
+    <ClCompile Include="..\..\..\..\OneDrive\Desktop\School Files\GAT150\Engine\Components\TextComponent.cpp" />
+    <ClCompile Include="..\..\..\..\OneDrive\Desktop\School Files\GAT150\Engine\Components\TileMapComponent.cpp" />
     <ClCompile Include="Components\AudioComponent.cpp" />
     <ClCompile Include="Components\ModelComponent.cpp" />
     <ClCompile Include="Components\PhysicsComponent.cpp" />
@@ -198,9 +204,20 @@
     <ClCompile Include="Renderer\Text.cpp" />
     <ClCompile Include="Renderer\Texture.cpp" />
     <ClCompile Include="Resource\ResourceManager.cpp" />
+    <ClCompile Include="Serialization\AudioChannel.cpp" />
+    <ClCompile Include="Serialization\AudioSystem.cpp" />
+    <ClCompile Include="Serialization\JSON.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Audio\AudioSystem.h" />
+    <ClInclude Include="..\..\..\..\OneDrive\Desktop\School Files\GAT150\Engine\Audio\AudioChannel.h" />
+    <ClInclude Include="..\..\..\..\OneDrive\Desktop\School Files\GAT150\Engine\Audio\AudioSystem.h" />
+    <ClInclude Include="..\..\..\..\OneDrive\Desktop\School Files\GAT150\Engine\Audio\Collision.h" />
+    <ClInclude Include="..\..\..\..\OneDrive\Desktop\School Files\GAT150\Engine\Components\CollisionComponent.h" />
+    <ClInclude Include="..\..\..\..\OneDrive\Desktop\School Files\GAT150\Engine\Components\RBPhysicsComponent.h" />
+    <ClInclude Include="..\..\..\..\OneDrive\Desktop\School Files\GAT150\Engine\Components\SpriteAnimateComponent.h" />
+    <ClInclude Include="..\..\..\..\OneDrive\Desktop\School Files\GAT150\Engine\Components\TextComponent.h" />
+    <ClInclude Include="..\..\..\..\OneDrive\Desktop\School Files\GAT150\Engine\Components\TileMapComponent.h" />
+    <ClInclude Include="..\..\..\..\OneDrive\Desktop\School Files\GAT150\Engine\Math\Rect.h" />
     <ClInclude Include="Components\AudioComponent.h" />
     <ClInclude Include="Components\ModelComponent.h" />
     <ClInclude Include="Components\PhysicsComponent.h" />
@@ -235,6 +252,10 @@
     <ClInclude Include="Renderer\Texture.h" />
     <ClInclude Include="Resource\Resource.h" />
     <ClInclude Include="Resource\ResourceManager.h" />
+    <ClInclude Include="Serialization\AudioChannel.h" />
+    <ClInclude Include="Serialization\AudioSystem.h" />
+    <ClInclude Include="Serialization\JSON.h" />
+    <ClInclude Include="Serialization\Serialization.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

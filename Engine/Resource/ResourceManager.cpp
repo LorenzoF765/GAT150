@@ -1,10 +1,11 @@
 #include "ResourceManager.h"
 
-namespace Solas {
-	void ResourceManager::Initialize(){
-	}
+namespace Engine
+{
+	void ResourceManager::Initialize() {}
 
-	void ResourceManager::Shutdown(){
-
+	void ResourceManager::ShutDown()
+	{
+		resources_.clear();
 	}
 }

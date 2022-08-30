@@ -4,33 +4,42 @@
 #include <string>
 #include <memory>
 
-namespace Solas {
-	class ResourceManager {
-	public:
-		ResourceManager() = default;
+namespace Engine
+{
+    class ResourceManager
+    {
+    public:
 
-		void Initialize();
-		void Shutdown();
+        ResourceManager() = default;
 
-		template <typename T>
-		std::shared_ptr<T> Get(const std::string& name, void* data = nullptr);
-	private:
-		std::map<std::string, std::shared_ptr<Resource>> m_resources;
-	};
+        void Initialize();
+        void ShutDown();
 
-	template<typename T>
-	inline std::shared_ptr<T> ResourceManager::Get(const std::string& name, void* data)
-	{
-		if (m_resources.find(name) != m_resources.end()) {
-			return std::dynamic_pointer_cast<T>(m_resources[name]);
-		}else{
-			std::shared_ptr<T> resource = std::make_shared<T>();
-			resource->Create(name, data);
-			m_resources[name] = resource;
+        template<typename T, typename ... TArgs>
+        std::shared_ptr<T> Get(const std::string& name, TArgs ... args);
 
-			return resource;
-		}
+    private:
 
-		return std::shared_ptr<T>();
-	}
+        std::map<std::string, std::shared_ptr<Resource>> resources_;
+
+    };
+
+    template<typename T, typename ... TArgs>
+    inline std::shared_ptr<T> ResourceManager::Get(const std::string& name, TArgs ... args)
+    {
+        if (resources_.find(name) != resources_.end())
+        {
+            return std::dynamic_pointer_cast<T>(resources_[name]);
+        }
+        else
+        {
+            std::shared_ptr<T> resource = std::make_shared<T>();
+            resource->Create(name, args...);
+            resources_[name] = resource;
+
+            return resource;
+        }
+
+        return std::shared_ptr<T>();
+    }
 }

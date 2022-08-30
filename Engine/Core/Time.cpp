@@ -1,14 +1,17 @@
 #include "Time.h"
-namespace Solas {
-	void Time::Tick() {
-		clock_duration duration = clock::now() - m_startTimePoint;
+
+namespace Engine
+{
+	void Engine::Time::Tick()
+	{
+		clock_duration duration = clock::now() - startTimePoint_;
 		time = duration.count() / (float)clock_duration::period::den;
-		//time = duration.count() / static_cast<float>(clock_duration::period::den);
 
-		duration = clock::now() - m_frameTimePoint;
-		deltaTime = duration.count() / (float)clock_duration::period::den;
-		//deltaTime = duration.count() / static_cast<float>(clock_duration::period::den);
+		duration = clock::now() - frameTimePoint_;
+		deltaTime = duration.count() / (float)clock::duration::period::den;
 
-		m_frameTimePoint = clock::now();
+		frameTimePoint_ = clock::now();
 	}
 }
+
+

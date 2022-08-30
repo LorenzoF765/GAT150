@@ -1,9 +1,12 @@
 #pragma once
 #include <string>
-	void setFilePath(const std::string& pathname);
-	std::string getFilePath();
 
-	bool fileExists(const std::string& pathname);
-	bool getFileSize(const std::string& pathname, size_t& size);
-	bool readFile(const std::string& pathname, std::string& buffer);
+namespace Engine
+{
+	void SetFilePath(const std::string& pathname);
+	std::string GetFilePath();
+
+	bool FileExists(const std::string& pathname);
+	bool GetFileSize(const std::string& pathname, size_t& size);
+	bool ReadFile(const std::string& pathname, std::string& buffer);
 }

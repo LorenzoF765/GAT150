@@ -1,14 +1,25 @@
 #pragma once
-#include "RendererComponent.h"
+#include "RenderComponent.h"
+#include "Renderer/Model.h"
 
-namespace Solas {
+namespace Engine
+{
 	class Model;
 
-	class ModelComponent : public RendererComponent {
+	class ModelComponent : public RenderComponent
+	{
 	public:
-		virtual void Update() override;
+
+		CLASS_DECLARATION(ModelComponent)
+
+			virtual void Update() override;
 		virtual void Draw(Renderer& renderer) override;
 
-		std::shared_ptr<Model> m_model;
+		virtual void Initialize() override {}
+
+		virtual bool Write(const rapidjson::Value& value) const override;
+		virtual bool Read(const rapidjson::Value& value) override;
+
+		std::shared_ptr<Model> model_;
 	};
 }

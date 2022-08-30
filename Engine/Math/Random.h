@@ -1,16 +1,15 @@
 #pragma once
 #include <random>
 
-namespace Solas {
+namespace Engine
+{
 	inline void SeedRandom(int seed) { srand(seed); }
 
-	inline int Random() { return rand(); }
-	inline int Random(int max) { return Random() % max; }
-	inline int Random(int min, int max) { return min + Random() % ((max - min) + 1); }
+	inline int RandomInt() { return rand(); }
+	inline int RandomInt(int max) { return RandomInt() % max; } // Exclusive, Does not include the maximum
+	inline int RandomInt(int min, int max) { return min + RandomInt() % ((max - min) + 1); } // Inclusive, does include maximum
 
-	inline float Randomf() { return rand() / (float)RAND_MAX; }
-	inline float Randomf(float max) { return Randomf() * max; }
-	inline float Randomf(float min, float max) { return min + Randomf(max - min); }
-
-
+	inline float RandomFloat() { return rand() / (float)RAND_MAX; } // 0.0 - 1.0
+	inline float RandomFloat(float max) { return RandomFloat() * max; } // 0.0 - MAX
+	inline float RandomFloat(float min, float max) { return min + RandomFloat(max - min); }
 }

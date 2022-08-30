@@ -1,16 +1,26 @@
 #include "ModelComponent.h"
-#include "Renderer/Model.h"
 #include "Framework/Actor.h"
+#include "Renderer/Renderer.h"
+#include "Resource/ResourceManager.h"
+#include "Engine.h"
 
-namespace Solas {
-	void Solas::ModelComponent::Update()
+
+namespace Engine
+{
+	void ModelComponent::Update() {}
+
+	void ModelComponent::Draw(Renderer& renderer)
 	{
-		//
+		model_->Draw(renderer, owner_->transform_);
 	}
 
-	void Solas::ModelComponent::Draw(Renderer& renderer)
+	bool ModelComponent::Write(const rapidjson::Value& value)const { return true; }
+	bool ModelComponent::Read(const rapidjson::Value& value)
 	{
-		m_model->Draw(renderer, m_owner->transform_);
-	}
+		std::string modelName_;
+		READ_DATA(value, modelName_);
+		model_ = resourceManager_g.Get<Model>(modelName_);
 
+		return true;
+	}
 }

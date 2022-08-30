@@ -1,4 +1,5 @@
 #pragma once
+
 #define _CRTDBG_MAP_ALLOC
 #include <stdlib.h>
 #include <crtdbg.h>
@@ -8,10 +9,9 @@
 // Replace _NORMAL_BLOCK with _CLIENT_BLOCK if you want the
 // allocations to be of _CLIENT_BLOCK type
 #else
-#define DBG_NEW new // was previously new new
-#endif // _DEBUG
+#define DBG_NEW new
+#endif //_DEBUG
 
-namespace Solas
-{
-	void InitializeMemory();
+namespace Engine {
+    void InitializeMemory();
 }

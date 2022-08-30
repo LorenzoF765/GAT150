@@ -1,15 +1,16 @@
 #pragma once
 #include <memory>
 
-
-namespace Solas {
-	//Forward Declaration
+namespace Engine
+{
 	class Renderer;
 	class Scene;
 
 	class Game
 	{
+
 	public:
+
 		Game() = default;
 		virtual ~Game() = default;
 
@@ -19,16 +20,12 @@ namespace Solas {
 		virtual void Update() = 0;
 		virtual void Draw(Renderer& renderer) = 0;
 
-		int GetScore() {
-			return m_score;
-		}
-		void AddPoints(int points) {
-			m_score += points;
-		}
+		int GetScore() { return score_; }
+		void AddPoints(int points) { score_ += points; }
 
 	protected:
 
-		std::unique_ptr<Scene> m_scene;
-		int m_score = 0;
+		std::unique_ptr<Scene> scene_;
+		int score_ = 000000;
 	};
 }

@@ -1,26 +1,28 @@
 #pragma once
 #include <chrono>
 
-namespace Solas {
-	class Time {
-	private:
+namespace Engine
+{
+	class Time
+	{
+	public:
+
+		Time() : startTimePoint_{ clock::now() }, frameTimePoint_{ clock::now() } {}
+
+		void Tick();
+		void Reset() { startTimePoint_ = clock::now(); }
+
 		using clock = std::chrono::high_resolution_clock;
 		using clock_duration = clock::duration;
 		using clock_rep = clock::rep;
 
-	public:
-		Time() :
-			m_startTimePoint{ clock::now() },
-			m_frameTimePoint{ clock::now() }
-		{}
-
-		void Tick();
-		void Reset() { m_startTimePoint = clock::now(); }
-
 		float deltaTime = 0;
 		float time = 0;
+
 	private:
-		clock::time_point m_startTimePoint; //time point at start of game
-		clock::time_point m_frameTimePoint; //time point at start of frame
+
+		clock::time_point startTimePoint_; // time point at start of application
+		clock::time_point frameTimePoint_; // time point at start of frame
+
 	};
 }
