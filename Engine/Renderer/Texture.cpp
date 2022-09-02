@@ -4,32 +4,17 @@
 #include <SDL.h>
 #include <SDL_image.h>
 
-namespace Engine
+namespace Solas
 {
 	Texture::~Texture()
 	{
-		if (texture_ != NULL) SDL_DestroyTexture(texture_);
-	}
-
-	bool Texture::Create(Renderer& renderer, const std::string& filename)
-	{
-		// Load Surface
-		SDL_Surface* surface = IMG_Load(filename.c_str());
-		if (surface == nullptr) LOG(SDL_GetError());
-
-		// Create Texture
-		texture_ = SDL_CreateTextureFromSurface(renderer.GetRenderer_(), surface);
-		if (texture_ == nullptr)
+		if (m_texture != NULL)
 		{
-			LOG(SDL_GetError());
-			SDL_FreeSurface(surface);
-			return false;
+			SDL_DestroyTexture(m_texture);
 		}
-
-		return true;
 	}
 
-	bool Texture::Create(std::string filename, ...)
+	bool Texture::Create(const std::string filename, ...)
 	{
 		// va_list - type to hold information about variable arguments 
 		va_list args;
@@ -43,28 +28,64 @@ namespace Engine
 		// va_end - ends traversal of the variadic function arguments 
 		va_end(args);
 
-		// create texture (returns true/false if successful) 
 		return Create(renderer, filename);
 	}
+
 	bool Texture::CreateFromSurface(SDL_Surface* surface, Renderer& renderer)
 	{
-		if (texture_) SDL_DestroyTexture(texture_);
+		// destroy current texture if it exists
+		if (m_texture)
+		{
+			SDL_DestroyTexture(m_texture);
+		}
 
-		texture_ = SDL_CreateTextureFromSurface(renderer.GetRenderer_(), surface);
+		// create texture
+		m_texture = SDL_CreateTextureFromSurface(renderer.m_renderer, surface);
+
 		SDL_FreeSurface(surface);
 
-		if (texture_ == nullptr)
+		if (!m_texture)
 		{
 			LOG(SDL_GetError());
 			return false;
 		}
+
 		return true;
 	}
-	Engine::Vector2 Texture::GetSize() const
+
+	bool Texture::Create(Renderer& renderer, const std::string& filename)
+	{
+		// load surface
+		SDL_Surface* surface = IMG_Load(filename.c_str());
+		if (surface == nullptr)
+		{
+			LOG(SDL_GetError());
+			return false;
+		}
+
+
+		// create texture
+		m_texture = SDL_CreateTextureFromSurface(renderer.m_renderer, surface);
+		if (m_texture == nullptr)
+		{
+			LOG(SDL_GetError());
+			SDL_FreeSurface(surface);
+
+			return false;
+		}
+
+		SDL_FreeSurface(surface);
+
+		return true;
+	}
+
+	Vector2 Texture::GetSize() const
 	{
 		SDL_Point point;
-		SDL_QueryTexture(texture_, nullptr, nullptr, &point.x, &point.y);
+		SDL_QueryTexture(m_texture, nullptr, nullptr, &point.x, &point.y);
 
-		return Vector2{ point.x, point.y };
+		return Vector2(point.x, point.y);
 	}
+
+
 }

@@ -1,9 +1,13 @@
 #pragma once
 
-namespace Engine
+
+namespace Solas
 {
 	struct Rect
 	{
-		int x, y, w, h;
+		int x;
+		int y;
+		int w;
+		int h;
 	};
 }

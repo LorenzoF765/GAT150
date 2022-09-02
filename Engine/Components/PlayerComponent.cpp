@@ -1,78 +1,148 @@
 #include "PlayerComponent.h"
 #include "Engine.h"
+#include "Framework/Game.h"
 #include <iostream>
 
-namespace Engine
+
+
+namespace Solas
 {
 	void PlayerComponent::Initialize()
 	{
-		auto component = owner_->GetComponent<CollisionComponent>();
-		if (component)
-		{
-			component->SetCollisionEnter(std::bind(&PlayerComponent::OnCollisionEnter, this, std::placeholders::_1));
-			component->SetCollisionExit(std::bind(&PlayerComponent::OnCollisionExit, this, std::placeholders::_1));
-		}
+		CharacterComponent::Initialize();
 	}
+
 	void PlayerComponent::Update()
 	{
-		// Movement
-		Vector2 direction = Vector2::Zero;
-		if (inputSystem_g.GetKeyState(key_left) == InputSystem::Held)
+		// move left/right
+		Vector2 direction = Vector2::zero;
+		if (Solas::g_inputSystem.GetKeyState(Solas::key_left) == InputSystem::State::Held)
 		{
-			direction = Vector2::Left;
+			direction = Vector2::left;
 		}
-		if (inputSystem_g.GetKeyState(key_right) == InputSystem::Held)
+		if (Solas::g_inputSystem.GetKeyState(Solas::key_right) == InputSystem::State::Held)
 		{
-			direction = Vector2::Right;
+			direction = Vector2::right;
 		}
 
-		auto component = owner_->GetComponent<PhysicsComponent>();
+		Vector2 velocity;
+		auto component = m_owner->GetComponent<PhysicsComponent>();
 		if (component)
 		{
+			// if in the air (m_groundCount == 0) then reduce force
+			float multiplier = (m_groundCount > 0) ? 1 : 0.2f;
+
 			component->ApplyForce(direction * speed);
+			velocity = component->velocity;
 		}
-		// Shoot
-		if (inputSystem_g.GetKeyState(key_space) == InputSystem::Pressed)
+
+		auto animComponent = m_owner->GetComponent<SpriteAnimComponent>();
+		if (animComponent)
 		{
-			auto component = owner_->GetComponent<PhysicsComponent>();
+			if (velocity.x != 0) animComponent->SetFlipHorizontal(velocity.x < 0);
+			if (std::fabs(velocity.x) > 0)
+			{
+				animComponent->SetSequence("run");
+			}
+			else
+			{
+				animComponent->SetSequence("idle");
+			}
+
+			/*
+			if (std::fabs(velocity.y) > 0)
+			{
+				animComponent->SetSequence("jump");
+			}
+			else
+			{
+				animComponent->SetSequence("idle");
+			*/
+		}
+
+		// jump
+		if (m_groundCount > 0 && g_inputSystem.GetKeyState(key_space) == InputSystem::State::Pressed)
+		{
+			auto component = m_owner->GetComponent<PhysicsComponent>();
 			if (component)
 			{
-				component->ApplyForce(Vector2::Up * 500);
+				component->ApplyForce(Vector2::up * jump);
 			}
 		}
 
-		// Grav Swap
-		if (inputSystem_g.GetKeyState(key_shift) == InputSystem::Pressed)
+		auto camera = m_owner->GetScene()->GetActorFromName("Camera");
+		if (camera)
 		{
-			auto component = owner_->GetComponent<RBPhysicsComponent>();
-			if (component)
-			{
-				component->GravitySwitch();
-			}
+			camera->m_transform.position = math::Lerp(camera->m_transform.position, m_owner->m_transform.position, 2 * g_time.deltaTime);
 		}
 	}
 
 	bool PlayerComponent::Write(const rapidjson::Value& value) const
 	{
+		//
 		return true;
 	}
 
 	bool PlayerComponent::Read(const rapidjson::Value& value)
 	{
-		READ_DATA(value, speed);
+		CharacterComponent::Read(value);
+		READ_DATA(value, jump);
 
 		return true;
 	}
+
+	void PlayerComponent::OnNotify(const Event& event)
+	{
+		if (event.name == "EVENT_DAMAGE")
+		{
+			health -= std::get<float>(event.data);
+			std::cout << health << std::endl;
+			if (health <= 0)
+			{
+				Event event;
+				event.name = "EVENT_PLAYER_DEAD";
+
+				g_eventManager.Notify(event);
+			}
+		}
+
+	}
+
 	void PlayerComponent::OnCollisionEnter(Actor* other)
 	{
 		if (other->GetName() == "Coin")
 		{
-			other->SetDestroy(true);
+			Event event;
+			event.name = "EVENT_ADD_POINTS";
+			event.data = 100;
+
+			g_eventManager.Notify(event);
+
+			other->SetDestroy();
 		}
-		std::cout << "Player Enter" << std::endl;
+
+		if (other->GetTag() == "Enemy")
+		{
+			Event event;
+			event.name = "EVENT_DAMAGE";
+			event.data = damage;
+			event.reciever = other;
+
+			g_eventManager.Notify(event);
+		}
+
+		if (other->GetTag() == "Ground")
+		{
+			m_groundCount++;
+		}
 	}
+
 	void PlayerComponent::OnCollisionExit(Actor* other)
 	{
-		std::cout << "Player Exit" << std::endl;
+		if (other->GetTag() == "Ground")
+		{
+			m_groundCount--;
+		}
 	}
 }
+

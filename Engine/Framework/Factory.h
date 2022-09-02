@@ -4,13 +4,15 @@
 #include <memory>
 #include <map>
 
-namespace Engine
+namespace Solas
 {
 	class GameObject;
+
 	class CreatorBase
 	{
 	public:
 		virtual ~CreatorBase() = default;
+
 		virtual std::unique_ptr<GameObject> Create() = 0;
 	};
 
@@ -29,56 +31,59 @@ namespace Engine
 	{
 	public:
 		~PrefabCreator() = default;
-		PrefabCreator(std::unique_ptr<T> instance) : instance_{ std::move(instance) } {}
+
+		PrefabCreator(std::unique_ptr<T> instance) : m_instance{ std::move(instance) } {}
 
 		virtual std::unique_ptr<GameObject> Create() override
 		{
-			return instance_->Clone();
+			return m_instance->Clone();
 		}
 
 	private:
-		std::unique_ptr<T> instance_;
+		std::unique_ptr<T> m_instance;
 	};
 
 	class Factory : public Singleton<Factory>
 	{
 	public:
-		void ShutDown() { registry_.clear(); }
+		void Shutdown() { m_registry.clear(); }
+
 		template <typename T>
 		void Register(const std::string& key);
 
 		template <typename T>
-		std::unique_ptr<T> Create(const std::string& key);
-
-		template <typename T>
 		void RegisterPrefab(const std::string& key, std::unique_ptr<T> instance);
 
-	private:
+		template <typename T>
+		std::unique_ptr<T> Create(const std::string& key);
 
-		std::map<std::string, std::unique_ptr<CreatorBase>> registry_;
+	private:
+		std::map<std::string, std::unique_ptr<CreatorBase>> m_registry;
 	};
 
-	template<typename T>
+	template <typename T>
 	inline void Factory::Register(const std::string& key)
 	{
-		registry_[key] = std::make_unique<Creator<T>>();
+		m_registry[key] = std::make_unique<Creator<T>>();
 	}
 
 	template<typename T>
 	inline void Factory::RegisterPrefab(const std::string& key, std::unique_ptr<T> instance)
 	{
-		registry_[key] = std::make_unique<PrefabCreator<T>>(std::move(instance));
+		m_registry[key] = std::make_unique<PrefabCreator<T>>(std::move(instance));
 	}
 
-	template<typename T>
+	template <typename T>
 	inline std::unique_ptr<T> Factory::Create(const std::string& key)
 	{
-		auto iter = registry_.find(key);
-		if (iter != registry_.end())
+		auto iter = m_registry.find(key);
+		if (iter != m_registry.end())
 		{
 			return std::unique_ptr<T>(dynamic_cast<T*>(iter->second->Create().release()));
 		}
+
 		LOG("error could not find key %s", key.c_str());
+
 		return std::unique_ptr<T>();
 	}
 }

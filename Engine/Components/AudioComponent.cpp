@@ -1,42 +1,53 @@
 #include "AudioComponent.h"
 #include "Engine.h"
 
-namespace Engine
+namespace Solas
 {
 	AudioComponent::~AudioComponent()
 	{
-		Stop();
+		m_channel.Stop();
 	}
+
 	void AudioComponent::Initialize()
 	{
-		if (playOnAwake_)
+		if (play_on_start)
 		{
 			Play();
 		}
 	}
+
 	void AudioComponent::Update()
 	{
+
 	}
+
+	bool AudioComponent::Write(const rapidjson::Value& value) const
+	{
+		//
+		return true;
+	}
+
+	bool AudioComponent::Read(const rapidjson::Value& value)
+	{
+		READ_DATA(value, sound_name);
+		READ_DATA(value, play_on_start);
+		READ_DATA(value, volume);
+		READ_DATA(value, pitch);
+		READ_DATA(value, loop);
+
+		g_audio.AddAudio(sound_name, sound_name);
+
+		return true;
+	}
+
 	void AudioComponent::Play()
 	{
 		Stop();
-		channel_ = audioSystem_g.PlayAudio(soundName_, loop_);
+		m_channel = g_audio.PlayAudio(sound_name, volume, pitch, loop);
 	}
+
 	void AudioComponent::Stop()
 	{
-		channel_.Stop();
-	}
-	bool AudioComponent::Write(const rapidjson::Value& value)const { return true; }
-	bool AudioComponent::Read(const rapidjson::Value& value)
-	{
-		READ_DATA(value, soundName_);
-		READ_DATA(value, volume_);
-		READ_DATA(value, pitch_);
-		READ_DATA(value, playOnAwake_);
-		READ_DATA(value, loop_);
-
-		audioSystem_g.AddAudio(soundName_, soundName_);
-
-		return true;
+		m_channel.Stop();
 	}
 }

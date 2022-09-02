@@ -3,91 +3,101 @@
 #include "Core/Logger.h"
 #include "Math/Transform.h"
 #include "Math/MathUtils.h"
-
-#include <cstdarg>
-#include <iostream>
 #include <sstream>
+#include <iostream>
+#include <cstdarg>
 
-namespace Engine
+namespace Solas
 {
-	//bool Model::Create(const std::string filename, ...)
-	//{
-	//	if (!Load(filename))
-	//	{
-	//		LOG("Error: Could Not Create Model.");
-	//		return false;
-	//	}
-	//	return true;
-	//}
+	Model::Model(const std::string& filename)
+	{
+		Load(filename);
+		m_radius = CalculateRadius();
+	}
 
 	bool Model::Create(const std::string filename, ...)
 	{
+		if (!Load(filename))
+		{
+			LOG("Error could not create model %s", filename.c_str());
+			return false;
+		}
+
+		// va_list - type to hold information about variable arguments 
 		va_list args;
 
+		// va_start - enables access to variadic function arguments 
 		va_start(args, filename);
 
+		// va_arg - accesses the next variadic function arguments 
 		Renderer& renderer = va_arg(args, Renderer);
 
+		// va_end - ends traversal of the variadic function arguments 
 		va_end(args);
 
-		return Create(filename, renderer);
+		// create texture (returns true/false if successful) 
+		return true;
 	}
 
 	void Model::Draw(Renderer& renderer, const Vector2& position, float angle, const Vector2& scale)
 	{
-
-		for (int i = 0; i < points_.size() - 1; i++)
+		// draw model
+		for (size_t i = 0; i < m_points.size() - 1; i++)
 		{
-			Engine::Vector2 p1 = Vector2::Rotate((points_[i] * scale), angle) + position;
-			Engine::Vector2 p2 = Vector2::Rotate((points_[i + 1] * scale), angle) + position;
-			renderer.DrawLine(p1, p2, color_);
+			Solas::Vector2 p1 = Vector2::Rotate((m_points[i] * scale), angle) + position;
+			Solas::Vector2 p2 = Vector2::Rotate((m_points[i + 1] * scale), angle) + position;
+
+			renderer.DrawLine(p1, p2, m_color);
 		}
 	}
+
 	void Model::Draw(Renderer& renderer, const Transform& transform)
 	{
-		if (points_.size() == 0)
-		{
-			return;
-		}
+		Matrix3x3 mx = transform.matrix;
+		//if (m_points.size() == 0) return;
 
-		Matrix3x3 mx;
-
-		for (int i = 0; i < points_.size() - 1; i++)
+		// draw model
+		for (size_t i = 0; i < m_points.size() - 1; i++)
 		{
-			Vector2 p1 = mx * points_[i];
-			Vector2 p2 = mx * points_[i + 1];
-			renderer.DrawLine(p1, p2, color_);
+			Solas::Vector2 p1 = mx * m_points[i];
+			Solas::Vector2 p2 = mx * m_points[i + 1];
+
+			renderer.DrawLine(p1, p2, m_color);
 		}
 	}
 
 	bool Model::Load(const std::string& filename)
 	{
 		std::string buffer;
-		Engine::ReadFile(filename, buffer);
 
-		if (!ReadFile(filename, buffer))
+		if (!Solas::ReadFile(filename, buffer))
 		{
-			LOG("Error: Could not load model %s", filename.c_str());
+			LOG("Error could not read file &s", filename.c_str());
 			return false;
 		}
 
-		// Read Color
+		// read color
 		std::istringstream stream(buffer);
-		stream >> color_;
+		stream >> m_color;
 
-		// Read Number of Points
+		// read num of points
 		std::string line;
 		std::getline(stream, line);
+
 		size_t numPoints = std::stoi(line);
 
-		//// Read Model Points
+		// read model points
 		for (size_t i = 0; i < numPoints; i++)
 		{
 			Vector2 point;
 
 			stream >> point;
-			points_.push_back(point);
+
+			m_points.push_back(point);
 		}
+
+		std::cout << line << std::endl;
+
 		return true;
 	}
 
@@ -95,8 +105,8 @@ namespace Engine
 	{
 		float radius = 0;
 
-		// Find Largest Length
-		for (auto& point : points_)
+		// find the largest length (radius)
+		for (auto& point : m_points)
 		{
 			if (point.Length() > radius) radius = point.Length();
 		}

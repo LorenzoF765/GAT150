@@ -1,14 +1,11 @@
 #pragma once
-#include "Physics/PhysicsSystem.h"
-#include "C:\Users\loren\OneDrive\Desktop\School Files\GAT150\ThirdParty\box2d\include\box2d\b2_body.h"
-#include "C:\Users\loren\OneDrive\Desktop\School Files\GAT150\ThirdParty\box2d\include\box2d\b2_contact.h"
+#include "C:\Users\loren\OneDrive\Desktop\Solas-Final\ThirdParty\box2d\include\box2d\box2d.h"
 
-namespace Engine
+namespace Solas
 {
 	class ContactListener : public b2ContactListener
 	{
 	public:
-
 		void BeginContact(b2Contact* contact) override;
 		void EndContact(b2Contact* contact) override;
 	};

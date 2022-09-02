@@ -4,7 +4,7 @@
 #include "Math/Vector2.h"
 #include <vector>
 
-namespace Engine
+namespace Solas
 {
 	class TilemapComponent : public Component
 	{
@@ -16,6 +16,7 @@ namespace Engine
 
 		virtual bool Write(const rapidjson::Value& value) const override;
 		virtual bool Read(const rapidjson::Value& value) override;
+
 
 	private:
 		int num_columns = 0;

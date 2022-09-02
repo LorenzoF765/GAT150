@@ -1,60 +1,67 @@
 #include "Engine.h"
-
+#include "SolGame.h"
 #include <iostream>
 
 using namespace std;
-// DEPENDENCIES
 
 int main()
 {
-	// Initialize Memory and Declare Fi lepath
+	Solas::InitializeMemory();
 
-	Engine::InitializeMemory();
-	Engine::SetFilePath("../Assets");
+	Solas::SetFilePath("../Assets");
 
-	// Initialize Our Major Systems
+	// initialize systems
+	Solas::g_renderer.Initialize();
+	Solas::g_inputSystem.Initialize();
+	Solas::g_audio.Initialize();
+	Solas::g_resources.Initialize();
+	Solas::g_physicsSystem.Initialize();
+	Solas::g_eventManager.Initialize();
 
-	Engine::renderer_g.Initialize();
-	Engine::inputSystem_g.Initialize();
-	Engine::audioSystem_g.Initialize();
-	Engine::resourceManager_g.Initialize();
-	Engine::physics_g.Initialize();
+	Solas::Engine::Instance().Register();
 
-	Engine::Engine::Instance().Register();
+	// create window
+	Solas::g_renderer.CreateWindow("Solas", 800, 600);
+	Solas::g_renderer.setClearColor(Solas::Color{ 20, 20, 20, 0 });
 
-	// Create A Window And Set Background Color
-	Engine::renderer_g.CreateWindow("Engine", 800, 600); // Creates the window with parameters
-	Engine::renderer_g.SetClearColor(Engine::Color{ 50, 50, 50, 255 }); // Sets background color within window
-
-	// Scene, Actor, Components
+	// create scene
+	unique_ptr<MyGame> game = make_unique<MyGame>();
+	game->Initialize();
 
 	bool quit = false;
 	while (!quit)
 	{
 
-		// Update
-		Engine::inputSystem_g.Update();
-		Engine::audioSystem_g.Update();
-		Engine::physics_g.Update();
-		Engine::timer_g.Tick();
+		//update (engine)
+		Solas::g_time.Tick();
+		Solas::g_inputSystem.Update();
+		Solas::g_audio.Update();
+		Solas::g_physicsSystem.Update();
+		Solas::g_eventManager.Update();
 
-		if (Engine::inputSystem_g.GetKeyState(Engine::key_esc) == Engine::InputSystem::KeyState::Pressed) quit = true;
+		if (Solas::g_inputSystem.GetKeyDown(Solas::key_escape)) { quit = true; }
 
+		// update Scene
+		game->Update();
 
+		// renderer
 
-		// Render
-		Engine::renderer_g.BeginFrame();
+		Solas::g_renderer.BeginFrame();
 
+		game->Draw(Solas::g_renderer);
 
-		Engine::renderer_g.EndFrame();
+		Solas::g_renderer.EndFrame();
 	}
 
+	game->Shutdown();
+	game.reset();
 
-	Engine::Factory::Instance().ShutDown();
+	Solas::Factory::Instance().Shutdown();
 
-	Engine::inputSystem_g.ShutDown();
-	Engine::audioSystem_g.ShutDown();
-	Engine::renderer_g.ShutDown();
-	Engine::resourceManager_g.ShutDown();
-	Engine::physics_g.Shutdown();
+	Solas::g_physicsSystem.Shutdown();
+	Solas::g_resources.Shutdown();
+	Solas::g_inputSystem.Shutdown();
+	Solas::g_audio.Shutdown();
+	Solas::g_renderer.Shutdown();
+	Solas::g_eventManager.Shutdown();
 }

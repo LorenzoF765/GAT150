@@ -1,18 +1,17 @@
 #pragma once
-#include "../ThirdParty/fmod/core/inc/fmod.hpp"
 
 namespace FMOD
 {
-	class FMOD::Channel;
+	class Channel;
 }
 
-namespace Engine
+namespace Solas
 {
 	class AudioChannel
 	{
 	public:
-		AudioChannel() {}
-		AudioChannel(FMOD::Channel* channel) { channel_ = channel; }// !! set m_channel 
+		AudioChannel() = default;
+		AudioChannel(FMOD::Channel* channel) : m_channel{ channel } { }
 
 		bool IsPlaying();
 		void Stop();
@@ -24,7 +23,6 @@ namespace Engine
 		float GetVolume();
 
 	private:
-		FMOD::Channel* channel_ = nullptr;
+		FMOD::Channel* m_channel{ nullptr };
 	};
-
 }

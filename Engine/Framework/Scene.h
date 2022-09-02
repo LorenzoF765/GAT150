@@ -3,31 +3,33 @@
 #include <list>
 #include <memory>
 
-namespace Engine
+namespace Solas
 {
+	// forward declaration
+	class Actor;
+	class Renderer;
+	class Game;
 
 	class Scene : public GameObject, public ISerializable
 	{
 	public:
-
 		Scene() = default;
+		Scene(Game* game) : m_game{ game } {}
 		Scene(const Scene& other) {}
 		~Scene() = default;
 
 		CLASS_DECLARATION(Scene)
 
-			void Initialize();
-		void Update();
-
+			void Initialize() override;
+		void Update() override;
 		void Draw(Renderer& renderer);
-		void Add(std::unique_ptr<Actor> actor);
-
-		void RemoveAll();
 
 		virtual bool Write(const rapidjson::Value& value) const override;
 		virtual bool Read(const rapidjson::Value& value) override;
 
-		// Actor Getters
+		void AddActor(std::unique_ptr<Actor> actor);
+		void RemoveAll();
+
 		template<typename T>
 		T* GetActor();
 
@@ -35,18 +37,20 @@ namespace Engine
 		T* GetActorFromName(const std::string& name);
 
 		template<typename T = Actor>
-		std::vector<T*> GetActorsFromTag(const std::string& tag);
+		std::vector<T*> GetActorFromTag(const std::string& tag);
+
+		Game* GetGame() { return m_game; }
 
 	private:
-
-		std::list<std::unique_ptr<Actor>> actors_;
+		Game* m_game;
+		std::list<std::unique_ptr<Actor>> m_actors;
 
 	};
 
 	template<typename T>
 	inline T* Scene::GetActor()
 	{
-		for (auto& actor : actors_)
+		for (auto& actor : m_actors)
 		{
 			T* result = dynamic_cast<T*>(actor.get());
 			if (result) return result;
@@ -55,35 +59,36 @@ namespace Engine
 	}
 
 	template<typename T>
-	T* Scene::GetActorFromName(const std::string& name)
+	inline T* Scene::GetActorFromName(const std::string& name)
 	{
-		for (auto& actor : actors_)
+		for (auto& actor : m_actors)
 		{
 			if (name == actor->GetName())
 			{
 				return dynamic_cast<T*>(actor.get());
 			}
 		}
+
 		return nullptr;
 	}
 
 	template<typename T>
-	std::vector<T*> Scene::GetActorsFromTag(const std::string& tag)
+	inline std::vector<T*> Scene::GetActorFromTag(const std::string& tag)
 	{
 		std::vector<T*> result;
 
-		for (auto& actor : actors_)
+		for (auto& actor : m_actors)
 		{
 			if (tag == actor->GetTag())
 			{
-				T* tagActor = dynamic_cast<T*>(actor.get());
-				if (tagActor)
+				T* TagActor = dynamic_cast<T*>(actor.get());
+				if (TagActor)
 				{
-					result.push_back(std::move(tagActor));
+					result.push_back(TagActor);
 				}
 			}
 		}
-		return result;
-	}
 
+		return std::vector<T*>();
+	}
 }

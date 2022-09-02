@@ -1,27 +1,26 @@
 #include "Scene.h"
 #include "Factory.h"
-#include "Core/Logger.h"
 #include <iostream>
 
-namespace Engine
+namespace Solas
 {
 	void Scene::Initialize()
 	{
-		for (auto& actor : actors_) { actor->Initialize(); }
+		for (auto& actor : m_actors)
+		{
+			actor->Initialize();
+		}
 	}
-	void Scene::RemoveAll()
-	{
-		actors_.clear();
-	}
+
 	void Scene::Update()
 	{
-		auto iter = actors_.begin();
-		while (iter != actors_.end())
+		auto iter = m_actors.begin();
+		while (iter != m_actors.end())
 		{
 			(*iter)->Update();
-			if ((*iter)->destroy_)
+			if ((*iter)->m_destroy)
 			{
-				iter = actors_.erase(iter);
+				iter = m_actors.erase(iter);
 			}
 			else
 			{
@@ -29,31 +28,29 @@ namespace Engine
 			}
 		}
 	}
+
 	void Scene::Draw(Renderer& renderer)
 	{
-		for (auto& actor : actors_)
+		for (auto& actor : m_actors)
 		{
 			actor->Draw(renderer);
 		}
 	}
-	void Scene::Add(std::unique_ptr<Actor> actor)
-	{
-		actor->scene_ = this;
-		actors_.push_back(std::move(actor));
-	}
+
 	bool Scene::Write(const rapidjson::Value& value) const
 	{
+		//
 		return true;
 	}
+
 	bool Scene::Read(const rapidjson::Value& value)
 	{
 		if (!value.HasMember("actors") || !value["actors"].IsArray())
 		{
-			LOG("Error reading file, neither an Actor nor Array");
 			return false;
 		}
 
-		//read actors
+		// read actors
 		for (auto& actorValue : value["actors"].GetArray())
 		{
 			std::string type;
@@ -62,6 +59,7 @@ namespace Engine
 			auto actor = Factory::Instance().Create<Actor>(type);
 			if (actor)
 			{
+				// read actor
 				actor->Read(actorValue);
 
 				bool prefab = false;
@@ -74,11 +72,29 @@ namespace Engine
 				}
 				else
 				{
-					Add(std::move(actor));
+					AddActor(std::move(actor));
 				}
 			}
+
 		}
 
 		return true;
 	}
+
+	void Scene::AddActor(std::unique_ptr<Actor> actor)
+	{
+		actor->m_scene = this;
+		m_actors.push_back(std::move(actor));
+	}
+
+	void Scene::RemoveAll()
+	{
+		for (auto& actor : m_actors) { actor->SetDestroy(); }
+
+		m_actors.clear();
+	}
+
+
+
 }
+

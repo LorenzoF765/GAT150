@@ -1,16 +1,14 @@
 #pragma once
 #include <memory>
 
-namespace Engine
+namespace Solas
 {
 	class Renderer;
 	class Scene;
 
 	class Game
 	{
-
 	public:
-
 		Game() = default;
 		virtual ~Game() = default;
 
@@ -20,12 +18,11 @@ namespace Engine
 		virtual void Update() = 0;
 		virtual void Draw(Renderer& renderer) = 0;
 
-		int GetScore() { return score_; }
-		void AddPoints(int points) { score_ += points; }
+		int GetScore() { return m_score; }
+		void AddPoints(int points) { m_score += points; }
 
 	protected:
-
-		std::unique_ptr<Scene> scene_;
-		int score_ = 000000;
+		std::unique_ptr<Scene> m_scene;
+		int m_score = 0;
 	};
 }

@@ -1,7 +1,7 @@
 #include "TilemapComponent.h"
 #include "Engine.h"
 
-namespace  Engine
+namespace  Solas
 {
     void TilemapComponent::Initialize()
     {
@@ -16,18 +16,22 @@ namespace  Engine
                 int x = i % num_columns;
                 int y = i / num_columns;
 
-                actor->transform_.position = owner_->transform_.position + (Vector2{ x, y } *size);
-                owner_->GetScene()->Add(std::move(actor));
+                actor->m_transform.position = m_owner->m_transform.position + (Vector2{ x, y } *size);
+                m_owner->GetScene()->AddActor(std::move(actor));
             }
         }
+
     }
+
     void TilemapComponent::Update()
     {
     }
+
     bool TilemapComponent::Write(const rapidjson::Value& value) const
     {
         return true;
     }
+
     bool TilemapComponent::Read(const rapidjson::Value& value)
     {
         READ_DATA(value, num_columns);

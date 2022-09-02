@@ -2,9 +2,9 @@
 #include <cstdarg>
 #include <iostream>
 
-namespace Engine
+namespace Solas
 {
-	Logger logger_g;
+	Logger g_logger;
 
 	void Logger::Log(const char* format, ...)
 	{
@@ -18,4 +18,5 @@ namespace Engine
 
 		va_end(args);
 	}
+
 }

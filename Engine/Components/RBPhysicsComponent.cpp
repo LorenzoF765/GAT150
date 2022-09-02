@@ -1,33 +1,35 @@
 #include "RBPhysicsComponent.h"
 #include "Engine.h"
 
-namespace Engine
+namespace Solas
 {
 	RBPhysicsComponent::~RBPhysicsComponent()
 	{
-		if (body_)
+		if (m_body)
 		{
-			physics_g.DestroyBody(body_);
+			g_physicsSystem.DestroyBody(m_body);
 		}
 	}
 
 	void RBPhysicsComponent::Initialize()
 	{
-		body_ = physics_g.CreateBody(owner_->transform_.position, owner_->transform_.rotation, data);
-		body_->SetGravityScale(data.gravity_scale);
-		body_->SetLinearDamping(damping);
+		m_body = g_physicsSystem.CreateBody(m_owner->m_transform.position, m_owner->m_transform.rotation, data);
+		m_body->SetGravityScale(data.gravity_scale);
+		m_body->SetLinearDamping(damping);
 	}
 
 	void RBPhysicsComponent::Update()
 	{
-		Vector2 position = B2VEC2_TO_VECTOR2(body_->GetPosition());
-		owner_->transform_.position = PhysicsSystem::WorldToScreen(position);
-		owner_->transform_.rotation = body_->GetAngle();
+		Vector2 position = B2VEC2_TO_VECTOR2(m_body->GetPosition());
+		m_owner->m_transform.position = PhysicsSystem::WorldToScreen(position);
+		m_owner->m_transform.rotation = math::RadToDeg(m_body->GetAngle());
+
+		velocity = B2VEC2_TO_VECTOR2(m_body->GetLinearVelocity());
 	}
 
 	void RBPhysicsComponent::ApplyForce(const Vector2& force)
 	{
-		body_->ApplyForceToCenter(VECTOR2_TO_B2VEC2(force), true);
+		m_body->ApplyForceToCenter(VECTOR2_TO_B2VEC2(force), true);
 	}
 
 	bool RBPhysicsComponent::Write(const rapidjson::Value& value) const
@@ -44,12 +46,5 @@ namespace Engine
 		READ_DATA(value, data.is_dynamic);
 
 		return true;
-	}
-
-	void RBPhysicsComponent::GravitySwitch()
-	{
-		float grav = body_->GetGravityScale();
-		grav = grav * -1;
-		body_->SetGravityScale(grav);
 	}
 }

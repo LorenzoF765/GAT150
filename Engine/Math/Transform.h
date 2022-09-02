@@ -1,43 +1,42 @@
 #pragma once
 #include "Vector2.h"
-#include <Math/Mat2_2.h>
+#include "Matrix3x3.h"
 #include "MathUtils.h"
-#include "Serialization/Serialization.h"
-#include <Math/Mat3_3.h>
+#include "Serialization/Serializable.h"
 
-namespace Engine
+namespace Solas
 {
 	struct Transform : public ISerializable
 	{
 		Vector2 position;
-		float rotation;
+		float rotation{ 0 };
 		Vector2 scale{ 1, 1 };
 
-		virtual bool Write(const rapidjson::Value& value) const override { return true; }
-		virtual bool Read(const rapidjson::Value& value) override
-		{
-			READ_DATA(value, position);
-			READ_DATA(value, rotation);
-			READ_DATA(value, scale);
-
-			return true;
-		}
-
 		Matrix3x3 matrix;
+
+		Transform() = default;
+		Transform(const Vector2& position, float rotation, const Vector2& scale) :
+			position{ position },
+			rotation{ rotation },
+			scale{ scale }
+		{}
+
+		virtual bool Write(const rapidjson::Value& value) const override;
+		virtual bool Read(const rapidjson::Value& value) override;
+
 		void Update()
 		{
 			Matrix3x3 mxScale = Matrix3x3::CreateScale(scale);
-			Matrix3x3 mxRotation = Matrix3x3::CreateRotation(Math::DegToRad(rotation));
+			Matrix3x3 mxRotation = Matrix3x3::CreateRotation(math::DegToRad(rotation));
 			Matrix3x3 mxTranslation = Matrix3x3::CreateTranslation(position);
 
 			matrix = { mxTranslation * mxRotation * mxScale };
-
 		}
 
 		void Update(const Matrix3x3& parent)
 		{
 			Matrix3x3 mxScale = Matrix3x3::CreateScale(scale);
-			Matrix3x3 mxRotation = Matrix3x3::CreateRotation(Math::DegToRad(rotation));
+			Matrix3x3 mxRotation = Matrix3x3::CreateRotation(math::DegToRad(rotation));
 			Matrix3x3 mxTranslation = Matrix3x3::CreateTranslation(position);
 
 			matrix = { mxTranslation * mxRotation * mxScale };
@@ -47,18 +46,10 @@ namespace Engine
 		operator Matrix3x3 () const
 		{
 			Matrix3x3 mxScale = Matrix3x3::CreateScale(scale);
-			Matrix3x3 mxRotation = Matrix3x3::CreateRotation(Math::DegToRad(rotation));
+			Matrix3x3 mxRotation = Matrix3x3::CreateRotation(math::DegToRad(rotation));
 			Matrix3x3 mxTranslation = Matrix3x3::CreateTranslation(position);
 
-			return { mxScale * mxRotation * mxTranslation };
-		}
-
-		operator Matrix2x2 () const
-		{
-			Matrix2x2 mxScale = Matrix2x2::CreateScale(scale);
-			Matrix2x2 mxRotation = Matrix2x2::CreateRotation(rotation);
-
-			return { mxScale * mxRotation };
+			return{ mxTranslation * mxRotation * mxScale };
 		}
 	};
 }

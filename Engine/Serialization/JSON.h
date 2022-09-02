@@ -1,19 +1,19 @@
 #pragma once
+#include "rapidjson/document.h"
 #include <string>
 #include <vector>
-#include "rapidjson/document.h"
 
-#define READ_DATA(value,data) json::Get(value, #data, data)
+#define READ_DATA(value, data) Solas::json::Get(value, #data, data)
 
-namespace Engine
+namespace Solas
 {
-	struct Rect;
-	struct Color;
 	struct Vector2;
+	struct Color;
+	struct Rect;
 
 	namespace json
 	{
-		bool Load(const std::string& filename, rapidjson::Document& document);
+		bool Load(const std::string filename, rapidjson::Document& document);
 
 		bool Get(const rapidjson::Value& value, const std::string& name, int& data);
 		bool Get(const rapidjson::Value& value, const std::string& name, float& data);

@@ -1,6 +1,7 @@
 #pragma once
 
-namespace Engine
+
+namespace Solas
 {
 	template<class T>
 	class Singleton
@@ -16,7 +17,6 @@ namespace Engine
 			static T instance;
 			return instance;
 		}
-
 	protected:
 		// prevent public constructor
 		Singleton() = default;

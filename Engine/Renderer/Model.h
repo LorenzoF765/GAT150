@@ -4,37 +4,32 @@
 #include <vector>
 #include <string>
 
-
-namespace Engine
+namespace Solas
 {
 	class Model : public Resource
 	{
-
 	public:
-
 		Model() = default;
-		Model(const std::vector<Vector2>& points, const Color& color) : points_{ points }, color_{ color } {}
-		Model(const std::string& filename)
-		{
-			Load(filename);
-			radius_ = CalculateRadius();
-		}
+		Model(const std::vector<Solas::Vector2>& points, const Solas::Color& color) :
+			m_points{ points },
+			m_color{ color }
+		{}
+		Model(const std::string& filename);
 
-		bool Create(const std::string filename, ...)override;
+		bool Create(const std::string filename, ...) override;
 
-		void Draw(Renderer& renderer, const Vector2& position, float angle, const Vector2& scale = Vector2{ 1,1 });
+		void Draw(Renderer& renderer, const Vector2& position, float angle, const Vector2& scale = Vector2{ 1, 1 });
 		void Draw(Renderer& renderer, const Transform& transform);
 
 		bool Load(const std::string& filename);
-
-		float GetRadius() { return radius_; }
 		float CalculateRadius();
 
+		float GetRadius() { return m_radius; }
+
 	private:
+		Solas::Color m_color;
+		std::vector<Solas::Vector2> m_points;
 
-		Color color_{ 0, 0, 0, 0 };
-		std::vector<Vector2> points_;
-		float radius_ = 0;
-
+		float m_radius = 0;
 	};
 }

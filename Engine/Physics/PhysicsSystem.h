@@ -1,25 +1,20 @@
-#pragma once 
-#include "C:\Users\loren\OneDrive\Desktop\School Files\GAT150\ThirdParty\box2d\include\box2d\b2_world.h"
-#include "C:\Users\loren\OneDrive\Desktop\School Files\GAT150\ThirdParty\box2d\include\box2d\b2_body.h"
-#include "C:\Users\loren\OneDrive\Desktop\School Files\GAT150\ThirdParty\box2d\include\box2d\b2_polygon_shape.h"
-#include "C:\Users\loren\OneDrive\Desktop\School Files\GAT150\ThirdParty\box2d\include\box2d\b2_fixture.h"
+#pragma once
 #include "Math/Vector2.h"
-#include "Physics/ContactListener.h"
+#include "C:\Users\loren\OneDrive\Desktop\Solas-Final\ThirdParty\box2d\include\box2d\box2d.h"
+#include "ContactListener.h"
 #include <memory>
 
 #define VECTOR2_TO_B2VEC2(vec) (*(b2Vec2*)(&vec))
-#define B2VEC2_TO_VECTOR2(vec) (*(Vector2*)(&vec))
+#define B2VEC2_TO_VECTOR2(vec) (*(Solas::Vector2*)(&vec))
 
-namespace Engine
+namespace Solas
 {
-	class ContactListener;
-
 	class PhysicsSystem
 	{
 	public:
 		struct RigidBodyData
 		{
-			float gravity_scale = 1;
+			float gravity_scale = 1.0f;
 			bool constrain_angle = false;
 			bool is_dynamic = true;
 		};
@@ -41,9 +36,11 @@ namespace Engine
 
 		void Update();
 
-		void SetCollisionBox(b2Body* body, const CollisionData& data, class Actor* actor = nullptr);
 		b2Body* CreateBody(const Vector2& position, float angle, const RigidBodyData& data);
 		void DestroyBody(b2Body* body);
+
+		void SetCollisionBox(b2Body* body, const CollisionData& data, class Actor* actor = nullptr);
+		void SetCollisionBoxStatic(b2Body* body, const CollisionData& data, class Actor* actor = nullptr);
 
 		static Vector2 WorldToScreen(const Vector2& world) { return world * pixelsPerUnit; }
 		static Vector2 ScreenToWorld(const Vector2& screen) { return screen * (1.0f / pixelsPerUnit); }
@@ -51,7 +48,7 @@ namespace Engine
 	private:
 		static const float pixelsPerUnit;
 
-		std::unique_ptr<b2World> world_;
-		std::unique_ptr<ContactListener> contactListener_;
+		std::unique_ptr<b2World> m_world;
+		std::unique_ptr<ContactListener> m_contactListener;
 	};
 }

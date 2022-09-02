@@ -9,9 +9,10 @@
 // Replace _NORMAL_BLOCK with _CLIENT_BLOCK if you want the
 // allocations to be of _CLIENT_BLOCK type
 #else
-#define DBG_NEW new
-#endif //_DEBUG
+#define new new
+#endif // _DEBUG
 
-namespace Engine {
-    void InitializeMemory();
+namespace Solas
+{
+	void InitializeMemory();
 }

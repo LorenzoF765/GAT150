@@ -3,19 +3,16 @@
 #include "Framework/Actor.h"
 #include "Engine.h"
 
-namespace Engine
+namespace Solas
 {
 	void SpriteComponent::Update()
 	{
-	}
-
-	void SpriteComponent::Draw(Renderer& renderer)
-	{
-		renderer.Draw(texture_, GetSource(), owner_->transform_);
+		//
 	}
 
 	bool SpriteComponent::Write(const rapidjson::Value& value) const
 	{
+		//
 		return true;
 	}
 
@@ -24,19 +21,22 @@ namespace Engine
 		std::string texture_name;
 		READ_DATA(value, texture_name);
 
-		texture_ = resourceManager_g.Get<Texture>(texture_name, renderer_g);
+		m_texture = g_resources.Get<Texture>(texture_name, g_renderer);
 
 		if (!READ_DATA(value, source))
 		{
 			source.x = 0;
 			source.y = 0;
-			source.w = (int)texture_->GetSize().x;
-			source.h = (int)texture_->GetSize().y;
+			source.w = (int)m_texture->GetSize().x;
+			source.h = (int)m_texture->GetSize().y;
 		}
 
 		return true;
 	}
+
+	void SpriteComponent::Draw(Renderer& renderer)
+	{
+		renderer.Draw(m_texture, GetSource(), m_owner->m_transform, registration, flipHorizontal);
+	}
+
 }
-
-
-

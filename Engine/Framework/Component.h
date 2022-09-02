@@ -1,7 +1,7 @@
 #pragma once
 #include "GameObject.h"
 
-namespace Engine
+namespace Solas
 {
 	class Actor;
 
@@ -10,12 +10,12 @@ namespace Engine
 	public:
 		Component() = default;
 
-		virtual void Initialize() override {}
+		virtual void Initialize() override { }
 		virtual void Update() = 0;
 
 		friend class Actor;
 
 	protected:
-		Actor* owner_ = nullptr;
+		Actor* m_owner = nullptr;
 	};
 }

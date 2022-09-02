@@ -3,7 +3,8 @@
 #include <filesystem>
 #include <fstream>
 
-namespace Engine {
+namespace Solas
+{
 	void SetFilePath(const std::string& pathname)
 	{
 		std::filesystem::current_path(pathname);
@@ -21,10 +22,7 @@ namespace Engine {
 
 	bool GetFileSize(const std::string& pathname, size_t& size)
 	{
-		if (!FileExists(pathname))
-		{
-			return false;
-		}
+		if (!FileExists(pathname)) return false;
 		size = std::filesystem::file_size(pathname);
 
 		return true;
@@ -34,10 +32,11 @@ namespace Engine {
 	{
 		if (!FileExists(pathname))
 		{
-			LOG("Error: Could not read file %s", pathname.c_str());
+			LOG("Error could not read file &s", pathname.c_str());
 			return false;
 		}
 
+		// get file size and set buffer size
 		size_t size;
 		GetFileSize(pathname, size);
 		buffer.resize(size);
@@ -48,4 +47,5 @@ namespace Engine {
 
 		return true;
 	}
+
 }

@@ -6,7 +6,7 @@
 struct _TTF_Font;
 struct SDL_Surface;
 
-namespace Engine
+namespace Solas
 {
 	struct Color;
 
@@ -17,18 +17,14 @@ namespace Engine
 		Font(const std::string& filename, int fontSize);
 		~Font();
 
-		bool Create(const std::string& filename, int& fontsize);
 		bool Create(const std::string filename, ...) override;
-
 		SDL_Surface* CreateSurface(const std::string& text, const Color& color);
 
-		bool Load(const std::string& filename, int fontsize);
+		void Load(const std::string& filename, int fontSize);
 
 		friend class Text;
 
 	private:
-
-		_TTF_Font* ttfFont_ = nullptr;
-
+		_TTF_Font* m_ttfFont = nullptr;
 	};
 }

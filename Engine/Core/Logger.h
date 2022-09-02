@@ -1,18 +1,17 @@
 #pragma once
 
 #ifdef _DEBUG
-#define LOG(format, ...) Engine::logger_g.Log(format, __VA_ARGS__)
+#define LOG(format, ...) Solas::g_logger.Log(format, __VA_ARGS__)
 #else
 #define LOG(format, ...) ((void)0)
-
 #endif // _DEBUG
 
-namespace Engine
+
+namespace Solas
 {
 	class Logger
 	{
 	public:
-
 		Logger() = default;
 		~Logger() = default;
 
@@ -22,5 +21,5 @@ namespace Engine
 
 	};
 
-	extern Logger logger_g;
-}
+	extern Logger g_logger;
+};

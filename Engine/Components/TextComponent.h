@@ -4,7 +4,7 @@
 #include "Math/Vector2.h"
 #include <memory>
 
-namespace Engine
+namespace Solas
 {
 	class Font;
 	class Texture;
@@ -12,10 +12,9 @@ namespace Engine
 	class TextComponent : public RenderComponent
 	{
 	public:
-
 		CLASS_DECLARATION(TextComponent)
 
-		virtual void Update() override;
+			virtual void Update() override;
 		virtual void Draw(Renderer& renderer) override;
 
 		void SetText(const std::string& text);
@@ -23,13 +22,14 @@ namespace Engine
 		virtual bool Write(const rapidjson::Value& value) const override;
 		virtual bool Read(const rapidjson::Value& value) override;
 
+	public:
 		std::string text;
-		std::string fontName;
-		int fontSize;
+		std::string font_name;
+		int font_size;
 		Vector2 registration;
 		Color color;
 
-		std::shared_ptr<Font> font_;
-		std::shared_ptr<Texture> texture_;
+		std::shared_ptr<Font> m_font;
+		std::shared_ptr<Texture> m_texture;
 	};
 }

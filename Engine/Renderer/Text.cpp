@@ -1,33 +1,37 @@
 #include "Text.h"
-#include "../Math/Color.h"
+#include "Font.h" 
 #include "Renderer.h"
-#include "../Renderer/Font.h"
+#include <SDL.h>
 #include <SDL_ttf.h> 
 
-Engine::Text::~Text()
+namespace Solas
 {
-	if (texture_ != NULL)
+	Text::~Text()
 	{
-		SDL_DestroyTexture(texture_);
+		if (m_texture != NULL)
+		{
+			SDL_DestroyTexture(m_texture);
+		}
+	}
+
+	void Text::Create(Renderer& renderer, const std::string& text, const Color& color)
+	{
+		SDL_Color c{ color.r, color.g, color.b, color.a };
+		SDL_Surface* surface = TTF_RenderText_Solid(m_font->m_ttfFont, text.c_str(), c);
+
+		m_texture = SDL_CreateTextureFromSurface(renderer.m_renderer, surface);
+
+		SDL_FreeSurface(surface);
+	}
+
+	void Text::Draw(Renderer& renderer, const Vector2& position)
+	{
+		int width, height;
+		SDL_QueryTexture(m_texture, nullptr, nullptr, &width, &height);
+
+		SDL_Rect rect{ (int)position.x, (int)position.y, width, height };
+
+		SDL_RenderCopy(renderer.m_renderer, m_texture, NULL, &rect);
 	}
 }
 
-void Engine::Text::Create(Renderer& renderer, const std::string text, const Color& color)
-{
-	SDL_Color c{ color.r, color.g, color.b, color.a };
-	SDL_Surface* surface = TTF_RenderText_Solid(font_->ttfFont_, text.c_str(), c);
-
-	texture_ = SDL_CreateTextureFromSurface(renderer.renderer_, surface);
-	SDL_FreeSurface(surface);
-}
-
-void Engine::Text::Draw(Renderer& renderer, const Vector2& position)
-{
-	int width, height;
-	SDL_QueryTexture(texture_, nullptr, nullptr, &width, &height);
-
-	SDL_Rect rect{ (int)position.x, (int)position.y, width, height };
-
-	SDL_RenderCopy(renderer.renderer_, texture_, NULL, &rect);
-
-}

@@ -10,38 +10,38 @@
       <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
     </Filter>
     <Filter Include="Source\Math">
-      <UniqueIdentifier>{7a4895b9-718a-4c66-8418-00a114a61069}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Core">
-      <UniqueIdentifier>{ce5e39e0-947c-4ec4-8ffa-0621943ec167}</UniqueIdentifier>
+      <UniqueIdentifier>{c3db1cb6-4241-4dd4-9484-049e34b46ef3}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source\Renderer">
-      <UniqueIdentifier>{2af95c6a-3b59-4ef3-a23f-9b9491055ae3}</UniqueIdentifier>
+      <UniqueIdentifier>{465a14cb-dea6-4c31-8d7e-758e92f8e9db}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Core">
+      <UniqueIdentifier>{6a5a0f63-9269-463c-ab44-8d52143b643a}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source\Input">
-      <UniqueIdentifier>{7159c069-87d5-40e7-b601-6c486b987ade}</UniqueIdentifier>
+      <UniqueIdentifier>{d9ef3cb4-9a95-485e-9274-c20c2120b662}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source\Framework">
-      <UniqueIdentifier>{62058078-acec-4950-8ce0-6723fe9a2a94}</UniqueIdentifier>
+      <UniqueIdentifier>{811efdb4-e144-41f8-936a-4ddbfe7f13ca}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source\Audio">
-      <UniqueIdentifier>{89ada615-4dc0-49de-bd03-e70e2ea54f13}</UniqueIdentifier>
+      <UniqueIdentifier>{35b34388-b760-4547-800b-65773462e6e1}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source\Components">
-      <UniqueIdentifier>{7036da40-2cea-4ca0-b007-4d868efa77c4}</UniqueIdentifier>
+      <UniqueIdentifier>{67695216-44dc-4dd5-afb2-6249254ba757}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source\Resource">
-      <UniqueIdentifier>{cdd7c5a3-d102-4513-8615-e16d2cb2d0ca}</UniqueIdentifier>
+      <UniqueIdentifier>{85886fe9-9b7a-47b3-b5f1-1ab49169468c}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source\Serialization">
-      <UniqueIdentifier>{d9ca2fff-5548-40dd-b285-1d7133a53921}</UniqueIdentifier>
+      <UniqueIdentifier>{5efc956f-dd2e-44a9-9535-bd3fe2eee15a}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source\Physics">
-      <UniqueIdentifier>{6b3be28f-877e-47e2-96d3-b85fec694b84}</UniqueIdentifier>
+      <UniqueIdentifier>{3dea536c-f245-48c0-8d59-5b150f633567}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Math\mathutils.cpp">
+    <ClCompile Include="Math\MathUtils.cpp">
       <Filter>Source\Math</Filter>
     </ClCompile>
     <ClCompile Include="Core\Memory.cpp">
@@ -65,11 +65,14 @@
     <ClCompile Include="Core\Time.cpp">
       <Filter>Source\Core</Filter>
     </ClCompile>
+    <ClCompile Include="Framework\Actor.cpp">
+      <Filter>Source\Framework</Filter>
+    </ClCompile>
     <ClCompile Include="Framework\Scene.cpp">
       <Filter>Source\Framework</Filter>
     </ClCompile>
-    <ClCompile Include="Framework\Actor.cpp">
-      <Filter>Source\Framework</Filter>
+    <ClCompile Include="Audio\AudioSystem.cpp">
+      <Filter>Source\Audio</Filter>
     </ClCompile>
     <ClCompile Include="Renderer\Font.cpp">
       <Filter>Source\Renderer</Filter>
@@ -83,14 +86,8 @@
     <ClCompile Include="Core\Logger.cpp">
       <Filter>Source\Core</Filter>
     </ClCompile>
-    <ClCompile Include="Components\AudioComponent.cpp">
-      <Filter>Source\Components</Filter>
-    </ClCompile>
-    <ClCompile Include="Components\ModelComponent.cpp">
-      <Filter>Source\Components</Filter>
-    </ClCompile>
-    <ClCompile Include="Components\PhysicsComponent.cpp">
-      <Filter>Source\Components</Filter>
+    <ClCompile Include="Math\Vector2.cpp">
+      <Filter>Source\Math</Filter>
     </ClCompile>
     <ClCompile Include="Components\PlayerComponent.cpp">
       <Filter>Source\Components</Filter>
@@ -98,54 +95,69 @@
     <ClCompile Include="Components\SpriteComponent.cpp">
       <Filter>Source\Components</Filter>
     </ClCompile>
-    <ClCompile Include="Math\Color.cpp">
+    <ClCompile Include="Components\AudioComponent.cpp">
+      <Filter>Source\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Components\PhysicsComponent.cpp">
+      <Filter>Source\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Math\Matrix2x2.cpp">
       <Filter>Source\Math</Filter>
     </ClCompile>
-    <ClCompile Include="Math\Mat2_2.cpp">
-      <Filter>Source\Math</Filter>
-    </ClCompile>
-    <ClCompile Include="Math\Mat3_3.cpp">
-      <Filter>Source\Math</Filter>
-    </ClCompile>
-    <ClCompile Include="Math\Vector2.cpp">
+    <ClCompile Include="Math\Matrix3x3.cpp">
       <Filter>Source\Math</Filter>
     </ClCompile>
     <ClCompile Include="Resource\ResourceManager.cpp">
       <Filter>Source\Resource</Filter>
     </ClCompile>
-    <ClCompile Include="Serialization\JSON.cpp">
+    <ClCompile Include="Components\ModelComponent.cpp">
+      <Filter>Source\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Serialization\Json.cpp">
       <Filter>Source\Serialization</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\..\OneDrive\Desktop\School Files\GAT150\Engine\Audio\AudioChannel.cpp">
+    <ClCompile Include="Math\Color.cpp">
+      <Filter>Source\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="Components\SpriteAnimateComponent.cpp">
+      <Filter>Source\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Physics\PhysicsSystem.cpp">
       <Filter>Source\Physics</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\..\OneDrive\Desktop\School Files\GAT150\Engine\Audio\AudioSystem.cpp">
+    <ClCompile Include="Components\RBPhysicsComponent.cpp">
+      <Filter>Source\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Components\CollisionComponent.cpp">
+      <Filter>Source\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Audio\AudioChannel.cpp">
+      <Filter>Source\Audio</Filter>
+    </ClCompile>
+    <ClCompile Include="Physics\ContactListener.cpp">
       <Filter>Source\Physics</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\..\OneDrive\Desktop\School Files\GAT150\Engine\Components\CollisionComponent.cpp">
+    <ClCompile Include="Components\TextComponent.cpp">
       <Filter>Source\Components</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\..\OneDrive\Desktop\School Files\GAT150\Engine\Components\TextComponent.cpp">
+    <ClCompile Include="Components\TileMapComponent.cpp">
       <Filter>Source\Components</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\..\OneDrive\Desktop\School Files\GAT150\Engine\Components\TileMapComponent.cpp">
+    <ClCompile Include="Components\CameraComponent.cpp">
       <Filter>Source\Components</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\..\OneDrive\Desktop\School Files\GAT150\Engine\Components\SpriteAnimateComponent.cpp">
+    <ClCompile Include="Components\CharacterComponent.cpp">
       <Filter>Source\Components</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\..\OneDrive\Desktop\School Files\GAT150\Engine\Components\RBPhysicsComponent.cpp">
-      <Filter>Source\Components</Filter>
+    <ClCompile Include="Framework\EventManager.cpp">
+      <Filter>Source\Framework</Filter>
     </ClCompile>
-    <ClCompile Include="Serialization\AudioChannel.cpp">
-      <Filter>Source\Audio</Filter>
-    </ClCompile>
-    <ClCompile Include="Serialization\AudioSystem.cpp">
-      <Filter>Source\Audio</Filter>
+    <ClCompile Include="Math\Transform.cpp">
+      <Filter>Source\Math</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Math\mathutils.h">
+    <ClInclude Include="Math\MathUtils.h">
       <Filter>Source\Math</Filter>
     </ClInclude>
     <ClInclude Include="Core\Memory.h">
@@ -154,13 +166,13 @@
     <ClInclude Include="Renderer\Renderer.h">
       <Filter>Source\Renderer</Filter>
     </ClInclude>
-    <ClInclude Include="Math\Color.h">
-      <Filter>Source\Math</Filter>
-    </ClInclude>
     <ClInclude Include="Math\Random.h">
       <Filter>Source\Math</Filter>
     </ClInclude>
     <ClInclude Include="Math\Vector2.h">
+      <Filter>Source\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="Math\Color.h">
       <Filter>Source\Math</Filter>
     </ClInclude>
     <ClInclude Include="Input\InputSystem.h">
@@ -172,11 +184,17 @@
     <ClInclude Include="Core\File.h">
       <Filter>Source\Core</Filter>
     </ClInclude>
-    <ClInclude Include="Engine.h">
-      <Filter>Source</Filter>
-    </ClInclude>
     <ClInclude Include="Math\Transform.h">
       <Filter>Source\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="Framework\GameObject.h">
+      <Filter>Source\Framework</Filter>
+    </ClInclude>
+    <ClInclude Include="Framework\Actor.h">
+      <Filter>Source\Framework</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine.h">
+      <Filter>Source</Filter>
     </ClInclude>
     <ClInclude Include="Core\Time.h">
       <Filter>Source\Core</Filter>
@@ -184,11 +202,8 @@
     <ClInclude Include="Framework\Scene.h">
       <Filter>Source\Framework</Filter>
     </ClInclude>
-    <ClInclude Include="Framework\Actor.h">
-      <Filter>Source\Framework</Filter>
-    </ClInclude>
-    <ClInclude Include="Framework\GameObject.h">
-      <Filter>Source\Framework</Filter>
+    <ClInclude Include="Audio\AudioSystem.h">
+      <Filter>Source\Audio</Filter>
     </ClInclude>
     <ClInclude Include="Renderer\Font.h">
       <Filter>Source\Renderer</Filter>
@@ -196,49 +211,40 @@
     <ClInclude Include="Renderer\Text.h">
       <Filter>Source\Renderer</Filter>
     </ClInclude>
+    <ClInclude Include="Framework\Game.h">
+      <Filter>Source\Framework</Filter>
+    </ClInclude>
     <ClInclude Include="Renderer\Texture.h">
       <Filter>Source\Renderer</Filter>
     </ClInclude>
     <ClInclude Include="Core\Logger.h">
       <Filter>Source\Core</Filter>
     </ClInclude>
-    <ClInclude Include="Components\AudioComponent.h">
-      <Filter>Source\Components</Filter>
-    </ClInclude>
-    <ClInclude Include="Components\ModelComponent.h">
-      <Filter>Source\Components</Filter>
-    </ClInclude>
-    <ClInclude Include="Components\PhysicsComponent.h">
-      <Filter>Source\Components</Filter>
+    <ClInclude Include="Framework\Component.h">
+      <Filter>Source\Framework</Filter>
     </ClInclude>
     <ClInclude Include="Components\PlayerComponent.h">
       <Filter>Source\Components</Filter>
     </ClInclude>
-    <ClInclude Include="Components\RendererComponent.h">
+    <ClInclude Include="Components\RenderComponent.h">
       <Filter>Source\Components</Filter>
     </ClInclude>
     <ClInclude Include="Components\SpriteComponent.h">
       <Filter>Source\Components</Filter>
     </ClInclude>
-    <ClInclude Include="Framework\Component.h">
-      <Filter>Source\Framework</Filter>
+    <ClInclude Include="Components\AudioComponent.h">
+      <Filter>Source\Components</Filter>
     </ClInclude>
-    <ClInclude Include="Framework\Factory.h">
-      <Filter>Source\Framework</Filter>
-    </ClInclude>
-    <ClInclude Include="Framework\Game.h">
-      <Filter>Source\Framework</Filter>
-    </ClInclude>
-    <ClInclude Include="Framework\Singleton.h">
-      <Filter>Source\Framework</Filter>
-    </ClInclude>
-    <ClInclude Include="Math\Mat2_2.h">
-      <Filter>Source\Math</Filter>
-    </ClInclude>
-    <ClInclude Include="Math\Mat3_3.h">
-      <Filter>Source\Math</Filter>
+    <ClInclude Include="Components\PhysicsComponent.h">
+      <Filter>Source\Components</Filter>
     </ClInclude>
     <ClInclude Include="Math\Vector3.h">
+      <Filter>Source\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="Math\Matrix2x2.h">
+      <Filter>Source\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="Math\Matrix3x3.h">
       <Filter>Source\Math</Filter>
     </ClInclude>
     <ClInclude Include="Resource\Resource.h">
@@ -247,44 +253,62 @@
     <ClInclude Include="Resource\ResourceManager.h">
       <Filter>Source\Resource</Filter>
     </ClInclude>
-    <ClInclude Include="Serialization\JSON.h">
+    <ClInclude Include="Components\ModelComponent.h">
+      <Filter>Source\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Framework\Singleton.h">
+      <Filter>Source\Framework</Filter>
+    </ClInclude>
+    <ClInclude Include="Framework\Factory.h">
+      <Filter>Source\Framework</Filter>
+    </ClInclude>
+    <ClInclude Include="Serialization\Json.h">
       <Filter>Source\Serialization</Filter>
     </ClInclude>
-    <ClInclude Include="Serialization\Serialization.h">
+    <ClInclude Include="Serialization\Serializable.h">
       <Filter>Source\Serialization</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\..\OneDrive\Desktop\School Files\GAT150\Engine\Audio\AudioChannel.h">
-      <Filter>Source\Physics</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\OneDrive\Desktop\School Files\GAT150\Engine\Audio\AudioSystem.h">
-      <Filter>Source\Physics</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\OneDrive\Desktop\School Files\GAT150\Engine\Audio\Collision.h">
-      <Filter>Source\Physics</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\OneDrive\Desktop\School Files\GAT150\Engine\Math\Rect.h">
+    <ClInclude Include="Math\Rect.h">
       <Filter>Source\Math</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\..\OneDrive\Desktop\School Files\GAT150\Engine\Components\CollisionComponent.h">
+    <ClInclude Include="Components\SpriteAnimateComponent.h">
       <Filter>Source\Components</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\..\OneDrive\Desktop\School Files\GAT150\Engine\Components\TextComponent.h">
+    <ClInclude Include="Physics\PhysicsSystem.h">
+      <Filter>Source\Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="Components\RBPhysicsComponent.h">
       <Filter>Source\Components</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\..\OneDrive\Desktop\School Files\GAT150\Engine\Components\TileMapComponent.h">
+    <ClInclude Include="Physics\Collision.h">
+      <Filter>Source\Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="Components\CollisionComponent.h">
       <Filter>Source\Components</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\..\OneDrive\Desktop\School Files\GAT150\Engine\Components\SpriteAnimateComponent.h">
-      <Filter>Source\Components</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\OneDrive\Desktop\School Files\GAT150\Engine\Components\RBPhysicsComponent.h">
-      <Filter>Source\Components</Filter>
-    </ClInclude>
-    <ClInclude Include="Serialization\AudioChannel.h">
+    <ClInclude Include="Audio\AudioChannel.h">
       <Filter>Source\Audio</Filter>
     </ClInclude>
-    <ClInclude Include="Serialization\AudioSystem.h">
-      <Filter>Source\Audio</Filter>
+    <ClInclude Include="Physics\ContactListener.h">
+      <Filter>Source\Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="Components\TextComponent.h">
+      <Filter>Source\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Components\TileMapComponent.h">
+      <Filter>Source\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Components\CameraComponent.h">
+      <Filter>Source\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Components\CharacterComponent.h">
+      <Filter>Source\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Framework\Event.h">
+      <Filter>Source\Framework</Filter>
+    </ClInclude>
+    <ClInclude Include="Framework\EventManager.h">
+      <Filter>Source\Framework</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

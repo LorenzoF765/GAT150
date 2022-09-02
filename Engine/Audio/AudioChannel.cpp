@@ -1,30 +1,37 @@
 #include "AudioChannel.h"
-#include <fmod.hpp>
+#include "fmod.hpp"
 
-namespace Engine
+namespace Solas
 {
 	bool AudioChannel::IsPlaying()
 	{
-		// !! if channel is null, return false 
-		if (channel_ == nullptr) return false;
+		if (m_channel)
+		{
+			bool isPlaying;
+			m_channel->isPlaying(&isPlaying);
 
-		bool isPlaying;
-		channel_->isPlaying(&isPlaying);
-
-		return isPlaying;
+			return isPlaying;
+		}
+		else
+		{
+			return false;
+		}
 	}
 
 	void AudioChannel::Stop()
 	{
-		if (IsPlaying()) channel_->stop();
+		if (IsPlaying())
+		{
+			m_channel->stop();
+		}
 	}
 
 	void AudioChannel::SetPitch(float pitch)
 	{
 		if (IsPlaying())
 		{
-			channel_->setPitch(pitch);
-		}// !! call setPitch on channel (pass pitch) 
+			m_channel->setPitch(pitch);
+		}
 	}
 
 	float AudioChannel::GetPitch()
@@ -32,8 +39,8 @@ namespace Engine
 		float pitch = 0;
 		if (IsPlaying())
 		{
-			channel_->getPitch(&pitch);
-		}// !! call getPitch (pass pointer to pitch &) 
+			m_channel->getPitch(&pitch);
+		}
 
 		return pitch;
 	}
@@ -42,8 +49,8 @@ namespace Engine
 	{
 		if (IsPlaying())
 		{
-			channel_->setVolume(volume);
-		}// !! call setVolume on channel (pass volume) 
+			m_channel->setVolume(volume);
+		}
 	}
 
 	float AudioChannel::GetVolume()
@@ -51,8 +58,8 @@ namespace Engine
 		float volume = 0;
 		if (IsPlaying())
 		{
-			channel_->getVolume(&volume);
-		}// !! call getVolume (pass pointer to volume &) 
+			m_channel->getVolume(&volume);
+		}
 
 		return volume;
 	}

@@ -1,11 +1,13 @@
 #pragma once
-#include "../Math/Transform.h"
-#include "Serialization/Serialization.h"
+#include "Math/Transform.h"
+#include "Serialization/Serializable.h"
 
-#define REGISTER_CLASS(class) Factory::Instance().Register<class>(#class);
 #define CLASS_DECLARATION(class) \
 	std::unique_ptr<GameObject> Clone() override { return std::make_unique<class>(*this); }
-namespace Engine
+
+#define REGISTER_CLASS(class) Solas::Factory::Instance().Register<class>(#class);
+
+namespace Solas
 {
 	class GameObject
 	{
